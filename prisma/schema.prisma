@@ -15,22 +15,103 @@ datasource db {
 // updatedAt DateTime @updatedAt
 
 model User {
-  id            Int      @id @default(autoincrement())
+  id            Int        @id @default(autoincrement())
   firstName     String
   lastName      String
-  email         String   @unique
+  email         String     @unique
   password_hash String
-  profile       Profile  @relation(fields: [profileId], references: [id])
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  profileId     Int      @unique
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  WishList      WishList[]
 }
 
-model Profile {
-  id              Int      @id @default(autoincrement())
-  age             Int?
-  profileImageUrl String?
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
-  user            User?
+model WishList {
+  id              Int              @id @default(autoincrement())
+  user            User             @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  userId          Int
+  wishListWeapons wishListWeapon[]
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+}
+
+model wishListWeapon {
+  id         Int       @id @default(autoincrement())
+  wishList   WishList? @relation(fields: [wishListId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  wishListId Int?
+  weapon     Weapon?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Weapon {
+  id               Int             @id @default(autoincrement())
+  icon             String
+  waterMarkIcon    String
+  name             String
+  flavorText       String
+  weaponType       String
+  weaponSubType    String
+  rarity           String
+  damageTypes      DamageType[]
+  equipmentSlot    EquipmentSlot?
+  baseStats        BaseStats?
+  sockets          Socket[]
+  createdAt        DateTime        @default(now())
+  updatedAt        DateTime        @updatedAt
+  wishListWeapon   wishListWeapon? @relation(fields: [wishListWeaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  wishListWeaponId Int?            @unique
+}
+
+model DamageType {
+  id          Int    @id @default(autoincrement())
+  weapon      Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId    Int
+  name        String
+  description String
+  icon        String
+}
+
+model EquipmentSlot {
+  id          Int    @id @default(autoincrement())
+  weapon      Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId    Int    @unique
+  name        String
+  description String
+  ammmoType   Int
+}
+
+model BaseStats {
+  id       Int    @id @default(autoincrement())
+  weapon   Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId Int    @unique
+  stats    Stat[]
+}
+
+model Stat {
+  id          Int       @id @default(autoincrement())
+  baseStats   BaseStats @relation(fields: [baseStatsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  baseStatsId Int
+  perks       Perk?     @relation(fields: [perkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  perkId      Int?
+  name        String
+  description String
+  value       Int
+}
+
+model Socket {
+  id         Int    @id @default(autoincrement())
+  weapon     Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId   Int
+  SocektName String
+  perks      Perk[]
+}
+
+model Perk {
+  id          Int    @id @default(autoincrement())
+  socket      Socket @relation(fields: [socketId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  socketId    Int
+  name        String
+  icon        String
+  description String
+  stats       Stat[]
 }
