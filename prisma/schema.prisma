@@ -45,53 +45,50 @@ model wishListWeapon {
 
 model Weapon {
   id               Int             @id @default(autoincrement())
-  icon             String
-  waterMarkIcon    String
   name             String
   flavorText       String
+  icon             String
+  waterMarkIcon    String?
   weaponType       String
-  weaponSubType    String
   rarity           String
   damageTypes      DamageType[]
   equipmentSlot    EquipmentSlot?
   baseStats        BaseStats?
   sockets          Socket[]
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
   wishListWeapon   wishListWeapon? @relation(fields: [wishListWeaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   wishListWeaponId Int?            @unique
 }
 
 model DamageType {
-  id          Int    @id @default(autoincrement())
-  weapon      Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  weaponId    Int
+  id          Int     @id @default(autoincrement())
+  weapon      Weapon? @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId    Int?
   name        String
   description String
   icon        String
 }
 
 model EquipmentSlot {
-  id          Int    @id @default(autoincrement())
-  weapon      Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  weaponId    Int    @unique
+  id          Int     @id @default(autoincrement())
+  weapon      Weapon? @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId    Int?    @unique
   name        String
   description String
   ammmoType   Int
 }
 
 model BaseStats {
-  id       Int    @id @default(autoincrement())
-  weapon   Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  weaponId Int    @unique
+  id       Int     @id @default(autoincrement())
+  weapon   Weapon? @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId Int?    @unique
   stats    Stat[]
 }
 
 model Stat {
-  id          Int       @id @default(autoincrement())
-  baseStats   BaseStats @relation(fields: [baseStatsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  baseStatsId Int
-  perks       Perk?     @relation(fields: [perkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  id          Int        @id @default(autoincrement())
+  baseStats   BaseStats? @relation(fields: [baseStatsId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  baseStatsId Int?
+  perk        Perk?      @relation(fields: [perkId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   perkId      Int?
   name        String
   description String
@@ -99,10 +96,10 @@ model Stat {
 }
 
 model Socket {
-  id         Int    @id @default(autoincrement())
-  weapon     Weapon @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  weaponId   Int
-  SocektName String
+  id         Int     @id @default(autoincrement())
+  weapon     Weapon? @relation(fields: [weaponId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  weaponId   Int?
+  socketName String
   perks      Perk[]
 }
 

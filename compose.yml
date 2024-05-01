@@ -1,5 +1,6 @@
 volumes:
   db:
+  cache:
 services:
   db:
     image: postgres
@@ -17,3 +18,11 @@ services:
       interval: 5s
       timeout: 5s
       retries: 5
+  cache:
+    image: redis:latest
+    restart: always
+    command: redis-server --save 20 1 --loglevel debug
+    volumes:
+      - cache:/data
+    ports:
+      - 6379:6379

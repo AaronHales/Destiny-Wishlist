@@ -4,6 +4,16 @@ import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
 import { authMiddleware } from "../middleware/authentication";
 import { UsersRepository } from "../repositories/users_respository";
+import { Queue } from "bullmq";
+
+const workQueue = new Queue(
+  "unimportant work",
+  {
+    connection: {
+      host: "localhost",
+      port: 6379
+    }
+  });
 
 // /users/...
 export const buildUsersController = (usersRepository: UsersRepository) => {
@@ -22,6 +32,22 @@ export const buildUsersController = (usersRepository: UsersRepository) => {
   router.get("/me", authMiddleware, (req, res) => {
     res.json({ user: req.user });
   });
+
+  router.post("/lotsofwork", authMiddleware, (req, res) => {
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num })
+    workQueue.add("print nums", { num: req.body.num }).
+  })
 
   return router;
 }

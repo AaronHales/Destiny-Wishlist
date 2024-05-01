@@ -30,9 +30,6 @@ export class UsersRepository {
         password_hash: bcrypt.hashSync(password),
         firstName: firstName,
         lastName: lastName,
-        profile: {
-          create: {}
-        }
       }
     });
   }
