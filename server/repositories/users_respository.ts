@@ -6,6 +6,7 @@ export type CreateUserPayload = {
   password: string,
   firstName: string,
   lastName: string,
+  wishList: any | undefined,
 }
 
 export class UsersRepository {
@@ -39,6 +40,13 @@ export class UsersRepository {
       where: {
         id: id
       },
+      include: {
+        WishList: {
+          where: {
+            userId: id
+          }
+        }
+      }
     });
   }
 }

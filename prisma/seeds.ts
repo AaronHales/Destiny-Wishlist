@@ -28,7 +28,6 @@ async function main() {
 }
 
 async function getWeapons() {
-  // let hadErrror = false
   console.log('getting weapons')
   let first1;
   const weapohs = [];
@@ -43,7 +42,6 @@ async function getWeapons() {
     .then(json => first1 = json)
     .catch(error => {
       console.error(error)
-      // hadErrror = true
     });
   if (first1) {
     if (first1['ErrorStatus'] == 'Success' && first1['Response']) {
@@ -60,9 +58,7 @@ async function getWeapons() {
         .catch(error => {
           console.error(error)
           console.error(error.timeout)
-          // hadErrror = true
         });
-      // console.log(second);
       if (second['DestinyInventoryItemDefinition']) {
         const newSecond = second['DestinyInventoryItemDefinition']
         for (const key in newSecond) {
@@ -76,13 +72,8 @@ async function getWeapons() {
       }
     }
   }
-  // if (hadErrror) {
-  //   return getWeapons()
-  // }
-  // else {
     console.log('done getting weapons')
     return Promise.resolve(weapohs);
-  // }
 }
 
 async function getWeaponData(weapon: { [x: string]: any; }) {

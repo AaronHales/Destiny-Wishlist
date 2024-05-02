@@ -11,10 +11,13 @@ import { buildUsersController } from "./server/controllers/users_controller";
 import { buildSessionsController } from "./server/controllers/sessions_controller";
 import { buildHomeController } from "./server/controllers/home_controller";
 import { UsersRepository } from "./server/repositories/users_respository";
+import { buildWeaponController } from "./server/controllers/weapon_controllers";
+import { WeaponRepository } from "./server/repositories/weapon_respository";
 
 
 const db = new PrismaClient();
 const usersRepository = UsersRepository.getInstance(db);
+const weaponRepository = WeaponRepository.getInstance(db);
 
 dotenv.config();
 
@@ -48,6 +51,7 @@ if (!DEBUG) {
 app.use("/", buildHomeController());
 app.use("/users", buildUsersController(usersRepository));
 app.use("/sessions", buildSessionsController(db));
+app.use('/weapon',buildWeaponController(weaponRepository) )
 
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Listening on port ${process.env.PORT || 3000}...`);
