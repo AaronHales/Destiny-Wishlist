@@ -45,6 +45,7 @@ model wishListWeapon {
 
 model Weapon {
   id               Int             @id @default(autoincrement())
+  weaponHash       String
   name             String
   flavorText       String
   icon             String
